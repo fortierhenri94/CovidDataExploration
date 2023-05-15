@@ -1,3 +1,6 @@
+-- DATASOURCE
+-- https://ourworldindata.org/covid-deaths
+
 SELECT * 
 FROM Covid..CovidDeaths as Deaths
 ORDER BY Deaths.location, Deaths.date
@@ -116,4 +119,13 @@ ORDER BY Location, Date
 	WHERE continent is not null
 	GROUP BY date
 
-	-- CREATE MORE VIEWS WITH JOIN ETC...
+	-- TOTAL DEATHS VS NEW VACCINATIONS, IS THERE A CORRELATION THAT VACCINATIONS LOWERED DEATHS INCREASES ?
+	CREATE VIEW DeathsVsVaccinationsEvo as
+	SELECT dea.location, dea.date, dea.new_deaths, dea.total_deaths, vac.new_vaccinations
+	FROM Covid..CovidDeaths as dea
+	INNER JOIN Covid..CovidVaccinations as vac
+	ON dea.location = vac.location
+	AND dea.date = vac.date
+	WHERE dea.continent is not null
+	-- AND dea.location = 'Canada'
+	-- ORDER BY 1, 2
